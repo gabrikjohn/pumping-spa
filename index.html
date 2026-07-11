@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Mulish:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{height:100%}
+  body{margin:0;min-height:100dvh;background:#ECF5F5;font-family:'Mulish',system-ui,sans-serif;overscroll-behavior-y:none}
+  a{color:var(--accent,#559A9E);text-decoration:none}
+  a:hover{color:var(--accent-hover,#48858a)}
+  input,button,textarea{font-family:inherit}
+  input:focus{outline:none;border-color:var(--accent-strong,#63A6AA)}
+  ::placeholder{color:var(--muted-l,#A6BCBC)}
+  @keyframes waveMove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @keyframes breathe{0%,100%{transform:scale(1);opacity:.30}50%{transform:scale(1.16);opacity:.55}}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+  @keyframes fadeOut{from{opacity:1}to{opacity:0}}
+  @keyframes sheetDown{from{transform:none}to{transform:translateY(100%)}}
+  ::-webkit-scrollbar{width:0;height:0}
+</style>
+</helmet>
+<div style="{{ themeWrap }}">
+  <input id="lullPhotoInput" type="file" accept="image/*" onChange="{{ onPhotoPick }}" style="display:none">
+  <div style="position:relative;width:100%;max-width:520px;margin:0 auto;min-height:100dvh;background:var(--screen,#ECF5F5)">
+
+      <sc-if value="{{ isWelcome }}" hint-placeholder-val="{{ true }}">
+        <div data-screen-label="Welcome" style="min-height:100dvh;background:radial-gradient(120% 78% at 50% 12%, var(--g1,#F2F9F9), var(--g2,#E2EEEE) 68%, var(--g3,#D3E6E6));display:flex;flex-direction:column;align-items:center;padding:calc(env(safe-area-inset-top, 0px) + 96px) 34px calc(env(safe-area-inset-bottom, 0px) + 36px);text-align:center;animation:fadeIn .5s ease">
+          <div style="position:relative;width:76px;height:76px;border-radius:50%;background:var(--warm,#D2E6E6);display:flex;align-items:center;justify-content:center;box-shadow:0 12px 34px rgba(60,100,100,.20);margin-bottom:28px">
+            <div style="width:27px;height:27px;background:linear-gradient(160deg,#F8EED8,#E4CFA2);border-radius:50% 50% 50% 3px;transform:rotate(45deg);box-shadow:inset 0 1px 3px rgba(255,255,255,.7)"></div>
+          </div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:60px;font-weight:600;color:var(--ink,#28403F);line-height:.95;letter-spacing:.01em">Lull</div>
+          <div style="font-size:12px;letter-spacing:.34em;text-transform:uppercase;color:var(--muted-m,#90A8A8);margin-top:14px;font-weight:600">a pumping spa</div>
+          <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;line-height:1.45;color:var(--ink-soft,#567070);margin:38px 0 0;max-width:290px">A quiet room for you and your body — no scoreboards, no strangers, no pressure to be more than you already are.</p>
+          <div style="flex:1;min-height:32px"></div>
+          <button onClick="{{ startOnboard }}" style="width:100%;padding:17px;border:none;border-radius:18px;background:var(--accent,#559A9E);color:var(--on-accent,#F4FAFA);font-size:16px;font-weight:600;letter-spacing:.03em;cursor:pointer;box-shadow:0 10px 26px rgba(60,110,110,.30)" style-hover="width:100%;padding:17px;border:none;border-radius:18px;background:var(--accent-hover,#48858a);color:var(--on-accent,#F4FAFA);font-size:16px;font-weight:600;letter-spacing:.03em;cursor:pointer;box-shadow:0 10px 26px rgba(60,110,110,.30)">Begin</button>
+          <button onClick="{{ skipToHome }}" style="margin-top:16px;background:none;border:none;color:var(--muted-m,#90A8A8);font-size:13.5px;font-weight:500;cursor:pointer;letter-spacing:.02em;padding:10px">I've been here before</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isSurvey }}">
+        <div data-screen-label="Your details" style="min-height:100dvh;padding:calc(env(safe-area-inset-top, 0px) + 46px) 24px calc(env(safe-area-inset-bottom, 0px) + 36px);animation:fadeIn .45s ease">
+          <button onClick="{{ backToWelcome }}" style="width:44px;height:44px;border-radius:50%;border:1px solid rgba(40,64,63,.14);background:var(--surface,#F5FBFB);color:var(--ink-soft,#567070);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-bottom:22px">←</button>
+          <div style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--muted-m,#90A8A8);font-weight:600;margin-bottom:10px">Your details</div>
+          <h1 style="font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:600;color:var(--ink,#28403F);line-height:1.02;margin:0 0 8px">Let's get<br>acquainted.</h1>
+          <p style="font-size:14.5px;line-height:1.5;color:var(--muted-d,#789191);margin:0 0 28px">A few gentle details. Nothing here is a test, and nothing is graded.</p>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
+            <div>
+              <label style="display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-m,#90A8A8);font-weight:600;margin-bottom:8px">Your name</label>
+              <input value="{{ momName }}" onChange="{{ onMomName }}" placeholder="Maya" style="width:100%;padding:14px 15px;border:1px solid rgba(40,64,63,.14);border-radius:14px;background:var(--surface,#F5FBFB);font-size:16px;color:var(--ink,#28403F)">
+            </div>
+            <div>
+              <label style="display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-m,#90A8A8);font-weight:600;margin-bottom:8px">Baby's name</label>
+              <input value="{{ babyName }}" onChange="{{ onBabyName }}" placeholder="Wren" style="width:100%;padding:14px 15px;border:1px solid rgba(40,64,63,.14);border-radius:14px;background:var(--surface,#F5FBFB);font-size:16px;color:var(--ink,#28403F)">
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
+            <div>
+              <label style="display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-m,#90A8A8);font-weight:600;margin-bottom:8px">Your birthday</label>
+              <input type="date" value="{{ momDob }}" onChange="{{ onMomDob }}" style="width:100%;padding:13px 15px;border:1px solid rgba(40,64,63,.14);border-radius:14px;background:var(--surface,#F5FBFB);font-size:16px;color:var(--ink,#28403F)">
+            </div>
+            <div>
+              <label style="display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-m,#90A8A8);font-weight:600;margin-bottom:8px">Baby's birthday</label>
+              <input type="date" value="{{ babyDob }}" onChange="{{ onBabyDob }}" style="width:100%;padding:13px 15px;border:1px solid rgba(40,64,63,.14);border-radius:14px;background:var(--surface,#F5FBFB);font-size:16px;color:var(--ink,#28403F)">
+            </div>
+          </div>
+
+          <div style="margin-bottom:20px">
+            <label style="display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-m,#90A8A8);font-weight:600;margin-bottom:8px">Email</label>
+            <input type="email" value="{{ email }}" onChange="{{ onEmail }}" placeholder="you@example.com" style="width:100%;padding:14px 15px;border:1px solid rgba(40,64,63,.14);border-radius:14px;background:var(--surface,#F5FBFB);font-size:16px;color:var(--ink,#28403F)">
+          </div>
+
+          <button onClick="{{ toggleOptOut }}" style="width:100%;display:flex;align-items:flex-start;gap:12px;text-align:left;background:var(--surface2,#E6F0F0);border:1px solid rgba(40,64,63,.10);border-radius:16px;padding:15px 16px;cursor:pointer;margin-bottom:30px">
+            <div style="position:relative;flex:none;width:22px;height:22px;border-radius:7px;border:1.6px solid var(--accent-strong,#63A6AA);background:var(--surface,#F5FBFB);display:flex;align-items:center;justify-content:center;margin-top:1px">
+              <sc-if value="{{ optOut }}"><div style="position:absolute;inset:0;background:var(--accent,#559A9E);border-radius:5px;display:flex;align-items:center;justify-content:center;color:var(--on-accent,#F4FAFA);font-size:13px;font-weight:700">✓</div></sc-if>
+            </div>
+            <span style="font-size:13.5px;line-height:1.45;color:var(--ink-soft,#567070)">Please keep marketing emails out of my sacred inbox. <span style="color:var(--muted-m,#90A8A8)">(You can always change your mind.)</span></span>
+          </button>
+
+          <button onClick="{{ submitSurvey }}" style="width:100%;padding:17px;border:none;border-radius:18px;background:var(--accent,#559A9E);color:var(--on-accent,#F4FAFA);font-size:16px;font-weight:600;letter-spacing:.03em;cursor:pointer;box-shadow:0 10px 26px rgba(60,110,110,.28)">Continue</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isQuiz }}">
+        <div data-screen-label="Quiz" style="min-height:100dvh;padding:calc(env(safe-area-inset-top, 0px) + 46px) 24px calc(env(safe-area-inset-bottom, 0px) + 36px);display:flex;flex-direction:column;animation:fadeIn .4s ease">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:30px">
+            <button onClick="{{ quizBack }}" style="width:44px;height:44px;border-radius:50%;border:1px solid rgba(40,64,63,.14);background:var(--surface,#F5FBFB);color:var(--ink-soft,#567070);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none">←</button>
+            <div style="display:flex;gap:7px;flex:1">
+              <sc-for list="{{ quizDots }}" as="dot" hint-placeholder-count="3">
+                <div style="{{ dot.style }}"></div>
+              </sc-for>
+            </div>
+            <span style="font-size:12px;color:var(--muted-m,#90A8A8);font-weight:600;letter-spacing:.04em">{{ quizIndex }}</span>
+          </div>
+
+          <h1 style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:600;color:var(--ink,#28403F);line-height:1.08;margin:0 0 8px">{{ quizTitle }}</h1>
+          <p style="font-size:14.5px;line-height:1.5;color:var(--muted-d,#789191);margin:0 0 26px">{{ quizSub }}</p>
+
+          <div style="display:flex;flex-wrap:wrap;gap:10px">
+            <sc-for list="{{ quizOptions }}" as="opt" hint-placeholder-count="6">
+              <button onClick="{{ opt.onClick }}" style="{{ opt.style }}">{{ opt.label }}</button>
+            </sc-for>
+          </div>
+
+          <div style="flex:1;min-height:28px"></div>
+          <button onClick="{{ quizNext }}" style="width:100%;padding:17px;border:none;border-radius:18px;background:var(--accent,#559A9E);color:var(--on-accent,#F4FAFA);font-size:16px;font-weight:600;letter-spacing:.03em;cursor:pointer;box-shadow:0 10px 26px rgba(60,110,110,.28)">{{ quizNextLabel }}</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isQuizResult }}">
+        <div data-screen-label="Quiz result" style="min-height:100dvh;background:radial-gradient(120% 70% at 50% 14%, var(--g1,#F2F9F9), var(--g2,#E2EEEE) 70%, var(--g3,#D3E6E6));padding:calc(env(safe-area-inset-top, 0px) + 80px) 30px calc(env(safe-area-inset-bottom, 0px) + 36px);display:flex;flex-direction:column;animation:fadeIn .5s ease">
+          <div style="font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted-m,#90A8A8);font-weight:600;margin-bottom:16px">Here's where you are</div>
+          <h1 style="font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:600;color:var(--ink,#28403F);line-height:1.02;margin:0 0 22px">We hear you,<br>{{ resultName }}.</h1>
+          <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:21px;line-height:1.5;color:var(--ink-soft,#567070);margin:0 0 18px">You didn't come here to hit a number. You came to feel like yourself again.</p>
+          <p style="font-size:15px;line-height:1.6;color:var(--muted-d,#789191);margin:0">So that's what Lull does — it holds the quiet, keeps the count out of sight, and reminds you that you and your milk are not the same measure of your worth. {{ resultLine }}</p>
+          <div style="flex:1;min-height:32px"></div>
+          <button onClick="{{ enterSpa }}" style="width:100%;padding:17px;border:none;border-radius:18px;background:var(--accent,#559A9E);color:var(--on-accent,#F4FAFA);font-size:16px;font-weight:600;letter-spacing:.03em;cursor:pointer;box-shadow:0 10px 26px rgba(60,110,110,.28)">Enter the spa</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isHome }}">
+        <div data-screen-label="Home" style="min-height:100dvh;padding:calc(env(safe-area-inset-top, 0px) + 46px) 22px calc(env(safe-area-inset-bottom, 0px) + 30px);animation:fadeIn .45s ease">
+          <div style="display:flex;align-items:center;gap:13px;margin-bottom:2px">
+            <sc-if value="{{ showHomePhoto }}">
+              <div style="width:54px;height:54px;flex:none;border-radius:50%;overflow:hidden;box-shadow:0 6px 16px rgba(60,110,110,.16);border:2px solid var(--surface,#F5FBFB)">
+                <div style="{{ babyPhotoBg }}"></div>
+              </div>
+            </sc-if>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:14px;color:var(--muted-m,#90A8A8);font-weight:500;letter-spacing:.01em">{{ greetingTime }},</div>
+              <div style="font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;color:var(--ink,#28403F);line-height:1;margin-top:2px">{{ greetName }}</div>
+            </div>
+            <button onClick="{{ goSettings }}" aria-label="Settings" style="width:46px;height:46px;flex:none;border-radius:50%;border:1px solid rgba(40,64,63,.12);background:var(--tint,#DCEDED);color:var(--accent,#559A9E);cursor:pointer;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;display:flex;align-items:center;justify-content:center">{{ momInitial }}</button>
+          </div>
+
+          <div style="margin-top:26px;background:var(--surface,#F5FBFB);border:1px solid rgba(40,64,63,.09);border-radius:24px;padding:24px 22px;box-shadow:0 8px 26px rgba(60,110,110,.08)">
+            <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-soft,#95C5C8);font-weight:600;margin-bottom:12px">Today's whisper</div>
+            <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:23px;line-height:1.38;color:var(--ink2,#314C4C);margin:0">{{ todays }}</p>
+          </div>
+
+          <button onClick="{{ begin }}" style="width: 100%; margin-top: 16px; text-align: left; padding: 22px; border: none; border-radius: 26px; background: linear-gradient(135deg, var(--accent-soft,#95C5C8), var(--accent-deep,#3F7E82)); cursor: pointer; display: flex; align-items: center; gap: 16px; box-shadow: 0 14px 34px rgba(60,110,110,.30)">
+            <div style="position:relative;width:56px;height:56px;border-radius:50%;overflow:hidden;background:rgba(255,255,255,.18);flex:none;border:1px solid rgba(255,255,255,.30)">
+              <div style="position:absolute;left:0;right:0;bottom:0;height:52%;background:linear-gradient(to top,#E4CFA2,#F6EAD0)"></div>
+            </div>
+            <div style="flex:1">
+              <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--on-accent,#F4FAFA);line-height:1.05">Begin a session</div>
+              <div style="font-size:13px;color:rgba(244,250,250,.82);margin-top:2px">{{ beginSub }}</div>
+            </div>
+            <span style="color:rgba(244,250,250,.85);font-size:22px">→</span>
+          </button>
+
+          <button onClick="{{ goHistory }}" style="width:100%;margin-top:14px;text-align:left;padding:20px 22px;border:1px solid rgba(40,64,63,.09);border-radius:22px;background:var(--surface,#F5FBFB);cursor:pointer;display:flex;align-items:center;gap:14px">
+            <div style="flex:1">
+              <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;color:var(--ink,#28403F)">Your moments</div>
+              <div style="font-size:13px;color:var(--muted-d,#789191);margin-top:3px;line-height:1.4">{{ momentsLine }}</div>
+            </div>
+            <span style="color:var(--accent-soft,#95C5C8);font-size:20px">→</span>
+          </button>
+
+          <p style="text-align: center; font-size: 18px; color: var(--muted-l,#A6BCBC); margin: 28px 0 0; font-style: italic; font-family: 'Cormorant Garamond',serif">{{ hydrationNudge }}</p>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isTimer }}">
+        <div data-screen-label="Session" style="min-height:100dvh;background:radial-gradient(120% 90% at 50% 18%, var(--g1,#F2F9F9), var(--g4,#E4F1F1) 68%, var(--g5,#D6E8E8));display:flex;flex-direction:column;align-items:center;padding:calc(env(safe-area-inset-top, 0px) + 60px) 24px calc(env(safe-area-inset-bottom, 0px) + 30px);animation:fadeIn .5s ease">
+          <div style="font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted-m,#90A8A8);font-weight:600;margin-bottom:38px">Session in progress</div>
+
+          <div style="position:relative;width:238px;height:238px;border-radius:50%;overflow:hidden;background:var(--surface,#F5FBFB);border:1px solid rgba(40,64,63,.10);box-shadow:inset 0 2px 22px rgba(40,64,63,.07), 0 22px 54px rgba(60,110,110,.16)">
+            <div style="position:absolute;left:0;right:0;bottom:0;height:{{ fillStyle }};transition:height 1.2s cubic-bezier(.4,0,.2,1);background:linear-gradient(to top,#E4CFA2,#F5E7CC)">
+              <div style="position:absolute;top:-9px;left:0;width:200%;height:14px;animation:waveMove 9s linear infinite;opacity:.55">
+                <svg viewBox="0 0 200 14" preserveAspectRatio="none" style="width:100%;height:100%;display:block"><path d="M0,7 C16.7,14 33.3,14 50,7 C66.7,0 83.3,0 100,7 C116.7,14 133.3,14 150,7 C166.7,0 183.3,0 200,7 L200,14 L0,14 Z" fill="#EFDFC0"></path></svg>
+              </div>
+              <div style="position:absolute;top:-13px;left:0;width:200%;height:16px;animation:waveMove 6s linear infinite">
+                <svg viewBox="0 0 200 16" preserveAspectRatio="none" style="width:100%;height:100%;display:block"><path d="M0,8 C16.7,16 33.3,16 50,8 C66.7,0 83.3,0 100,8 C116.7,16 133.3,16 150,8 C166.7,0 183.3,0 200,8 L200,16 L0,16 Z" fill="#F5E7CC"></path></svg>
+              </div>
+            </div>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2">
+              <div style="position:absolute;width:124px;height:124px;border-radius:50%;background:var(--warm,#D2E6E6);animation:breathe 5.5s ease-in-out infinite"></div>
+              <sc-if value="{{ showTime }}">
+                <div style="position:relative;font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:600;color:var(--ink2,#314C4C);letter-spacing:.02em">{{ timeLabel }}</div>
+              </sc-if>
+            </div>
+          </div>
+
+          <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:21px;line-height:1.45;color:var(--ink3,#425C5C);text-align:center;max-width:280px;margin:36px 0 0;min-height:62px;display:flex;align-items:center;justify-content:center;transition:opacity 1.3s ease, transform 1.3s ease;opacity:{{ vesselOpacity }};transform:{{ vesselTransform }}">{{ vesselText }}</p>
+          <div style="font-size:13px;color:var(--muted-m,#90A8A8);margin-top:14px;letter-spacing:.02em">Inhale for four… exhale for six.</div>
+          <sc-if value="{{ reachedGoal }}">
+            <div style="margin-top:16px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;line-height:1.4;color:var(--accent,#559A9E);text-align:center;max-width:260px;animation:fadeIn 1s ease">You've reached your gentle mark. Linger as long as you like.</div>
+          </sc-if>
+
+          <button onClick="{{ togglePeek }}" style="margin-top:20px;background:none;border:none;color:var(--muted-m,#90A8A8);font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.02em;border-bottom:1px dashed rgba(144,168,168,.5);padding:8px 2px 2px">{{ peekLabel }}</button>
+
+          <sc-if value="{{ chimeSetupClosed }}">
+            <button onClick="{{ openChimeSetup }}" style="margin-top:12px;background:none;border:none;color:var(--muted-m,#90A8A8);font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.02em;border-bottom:1px dashed rgba(144,168,168,.5);padding:8px 2px 2px">{{ chimeSetupLink }}</button>
+          </sc-if>
+          <sc-if value="{{ chimeSetupOpen }}">
+            <div style="margin-top:16px;display:flex;flex-direction:column;align-items:center;gap:12px;background:var(--surface,#F5FBFB);border:1px solid rgba(40,64,63,.09);border-radius:22px;padding:18px 22px;box-shadow:0 10px 26px rgba(60,110,110,.08);animation:fadeIn .3s ease">
+              <div style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted-m,#90A8A8);font-weight:600">Gentle chime when you reach</div>
+              <div style="display:flex;align-items:center;gap:18px">
+                <button onClick="{{ chimeDec }}" style="width:44px;height:44px;flex:none;border-radius:50%;border:1.5px solid rgba(40,64,63,.16);background:transparent;color:var(--ink-soft,#567070);font-size:19px;cursor:pointer">−</button>
+                <div style="font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:600;color:var(--ink2,#314C4C);min-width:96px;text-align:center">{{ chimeSetLabel }}</div>
+                <button onClick="{{ chimeInc }}" style="width:44px;height:44px;flex:none;border-radius:50%;border:1.5px solid rgba(40,64,63,.16);background:transparent;color:var(--ink-soft,#567070);font-size:19px;cursor:pointer">+</button>
+              </div>
+              <div style="font-size:12.5px;line-height:1.45;color:var(--muted-d,#789191);text-align:center;max-width:230px">No countdown, no cut-off. Set it and forget it — stay as long as you like.</div>
+              <button onClick="{{ closeChimeSetup }}" style="margin-top:2px;background:none;border:none;color:var(--muted-m,#90A8A8);font-size:12.5px;font-weight:600;cursor:pointer;padding:6px 4px">done</button>
+            </div>
+          </sc-if>
+
+          <div style="flex:1;min-height:24px"></div>
+          <div style="display:flex;gap:12px;width:100%">
+            <button onClick="{{ pauseResume }}" style="flex:1;padding:16px;border:1.5px solid rgba(40,64,63,.16);border-radius:17px;background:transparent;color:var(--ink-soft,#567070);font-size:16px;font-weight:600;cursor:pointer">{{ pauseLabel }}</button>
+            <button onClick="{{ finish }}" style="flex:1;padding:16px;border:none;border-radius:17px;background:var(--accent,#559A9E);color:var(--on-accent,#F4FAFA);font-size:16px;font-weight:600;cursor:pointer;box-shadow:0 10px 24px rgba(60,110,110,.26)">Finish</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isComplete }}">
+        <div data-screen-label="Complete" style="min-height:100dvh;background:radial-gradient(120% 70% at 50% 16%, var(--g1,#F2F9F9), var(--g2,#E2EEEE) 70%, var(--g3,#D3E6E6));padding:calc(env(safe-area-inset-top, 0px) + 84px) 30px calc(env(safe-area-inset-bottom, 0px) + 36px);display:flex;flex-direction:column;align-items:center;text-align:center;animation:fadeIn .5s ease">
+          <div style="width:66px;height:66px;border-radius:50%;background:var(--warm,#D2E6E6);display:flex;align-items:center;justify-content:center;color:var(--accent,#559A9E);font-size:26px;box-shadow:0 10px 28px rgba(60,110,110,.16);margin-bottom:26px">✓</div>
+          <h1 style="font-family:'Cormorant Garamond',serif;font-size:46px;font-weight:600;color:var(--ink,#28403F);line-height:1;margin:0 0 18px">That's enough.</h1>
+          <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:21px;line-height:1.45;color:var(--ink-soft,#567070);margin:0;max-width:290px">{{ completeAff }}</p>
+
+          <div style="flex:1;min-height:30px"></div>
+
+          <div style="width:100%;background:var(--surface,#F5FBFB);border:1px solid rgba(40,64,63,.09);border-radius:22px;padding:20px;margin-bottom:14px;text-align:left">
+            <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-soft,#95C5C8);font-weight:600;margin-bottom:14px">Before you drift off</div>
+            <div style="font-size:14px;color:var(--ink-soft,#567070);font-weight:600;margin-bottom:9px">How did it feel?</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px">
+              <sc-for list="{{ moodChips }}" as="c" hint-placeholder-count="5">
+                <button onClick="{{ c.onClick }}" style="{{ c.style }}">{{ c.label }}</button>
+              </sc-for>
+            </div>
+            <div style="font-size:14px;color:var(--ink-soft,#567070);font-weight:600;margin-bottom:9px">What was with you?</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ condChips }}" as="c" hint-placeholder-count="6">
+                <button onClick="{{ c.onClick }}" style="{{ c.style }}">{{ c.label }}</button>
+              </sc-for>
+            </div>
+            <sc-if value="{{ ozClosed }}">
+              <button onClick="{{ openOz }}" style="margin-top:18px;background:none;border:none;padding:8px 0 2px;color:var(--muted-m,#90A8A8);font-size:13px;font-weight:600;cursor:pointer;border-bottom:1px dashed rgba(144,168,168,.5)">note the ounces — only if it serves you</button>
+            </sc-if>
+            <sc-if value="{{ ozIsOpen }}">
+              <div style="margin-top:18px;display:flex;align-items:center;gap:14px">
+                <button onClick="{{ ozMinus }}" style="width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(40,64,63,.16);background:var(--surface,#F5FBFB);color:var(--ink-soft,#567070);font-size:18px;cursor:pointer">−</button>
+                <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--ink2,#314C4C);min-width:74px;text-align:center">{{ ozLabel }}</div>
+                <button onClick="{{ ozPlus }}" style="width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(40,64,63,.16);background:var(--surface,#F5FBFB);color:var(--ink-soft,#567070);font-size:18px;cursor:pointer">+</button>
+                <button onClick="{{ ozClear }}" style="margin-left:auto;background:none;border:none;color:var(--muted-m,#90A8A8);font-size:12.5px;font-weight:600;cursor:pointer;padding:10px 0">never mind</button>
+              </div>
+              <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:var(--muted-m,#90A8A8);margin-top:10px">Tucked behind the curtain. It says nothing about you.</div>
+            </sc-if>
+          </div>
+
+          <sc-if value="{{ needTap }}">
+            <button onClick="{{ toggleReveal }}" style="width:100%;padding:16px;border:1px dashed rgba(144,168,168,.55);border-radius:18px;background:var(--surface,#F5FBFB);color:var(--muted-d,#789191);font-size:14px;font-weight:600;cursor:pointer;margin-bottom:14px">Show me the numbers <span style="color:var(--muted-l,#A6BCBC);font-weight:400">(if you must)</span></button>
+          </sc-if>
+          <sc-if value="{{ showReveal }}">
+            <div style="width:100%;background:var(--surface,#F5FBFB);border:1px solid rgba(40,64,63,.09);border-radius:20px;padding:22px;margin-bottom:14px">
+              <div style="font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;color:var(--ink2,#314C4C)">{{ completeMinutes }}</div>
+              <sc-if value="{{ completeOzShow }}"><div style="font-size:14px;color:var(--accent,#559A9E);font-weight:600;margin-top:6px">{{ completeOz }}</div></sc-if>
+              <div style="font-size:13px;color:var(--muted-m,#90A8A8);margin-top:8px;line-height:1.4;font-style:italic;font-family:'Cormorant Garamond',serif">And that's the only number worth keeping.</div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ moodPicked }}">
+            <button onClick="{{ backToCalm }}" style="width:100%;padding:17px;border:none;border-radius:18px;background:var(--accent,#559A9E);color:var(--on-accent,#F4FAFA);font-size:16px;font-weight:600;letter-spacing:.03em;cursor:pointer;box-shadow:0 10px 26px rgba(60,110,110,.28)">Back to calm</button>
+          </sc-if>
+          <sc-if value="{{ needMood }}">
+            <button disabled style="width:100%;padding:17px;border:none;border-radius:18px;background:var(--tint,#DCEDED);color:var(--muted-l,#A6BCBC);font-size:16px;font-weight:600;letter-spacing:.03em;cursor:default">Back to calm</button>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isHistory }}">
+        <div data-screen-label="Your moments" style="min-height:100dvh;padding:calc(env(safe-area-inset-top, 0px) + 46px) 24px calc(env(safe-area-inset-bottom, 0px) + 36px);animation:fadeIn .45s ease">
+          <button onClick="{{ backToCalm }}" style="width:44px;height:44px;border-radius:50%;border:1px solid rgba(40,64,63,.14);background:var(--surface,#F5FBFB);color:var(--ink-soft,#567070);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-bottom:22px">←</button>
+          <h1 style="font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:600;color:var(--ink,#28403F);line-height:1;margin:0 0 8px">Your moments</h1>
+          <p style="font-size:14.5px;line-height:1.5;color:var(--muted-d,#789191);margin:0 0 26px">The times you chose to sit down — and, behind a curtain, the shapes they make.</p>
+
+          <sc-if value="{{ noSessions }}">
+            <div style="background:var(--surface,#F5FBFB);border:1px solid rgba(40,64,63,.09);border-radius:22px;padding:30px 24px;text-align:center">
+              <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;line-height:1.5;color:var(--ink-soft,#567070);margin:0">Nothing here yet — and that's just fine. Your first quiet moment will settle here when it's had.</p>
+            </div>
+          </sc-if>
+
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <sc-for list="{{ sessions }}" as="s" hint-placeholder-count="3">
+              <div style="background:var(--surface,#F5FBFB);border:1px solid rgba(40,64,63,.09);border-radius:20px;padding:18px 20px">
+                <div style="display:flex;align-items:baseline;justify-content:space-between">
+                  <div style="font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:600;color:var(--ink,#28403F);text-transform:capitalize">{{ s.moodWord }}</div>
+                  <div style="font-size:12px;color:var(--muted-l,#A6BCBC);font-weight:500">{{ s.dateLabel }}</div>
+                </div>
+                <div style="font-size:14px;line-height:1.45;color:var(--muted-d,#789191);font-style:italic;font-family:'Cormorant Garamond',serif;margin-top:4px">{{ s.line }}</div>
+                <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(40,64,63,.08)">
+                  <sc-if value="{{ s.revealed }}">
+                    <div style="font-size:14px;color:var(--accent,#559A9E);font-weight:600">{{ s.minutesLabel }}</div>
+                  </sc-if>
+                  <sc-if value="{{ s.hidden }}">
+                    <button onClick="{{ s.onToggle }}" style="background:none;border:none;padding:8px 0 1px;color:var(--muted-m,#90A8A8);font-size:13px;font-weight:600;cursor:pointer;border-bottom:1px dashed rgba(144,168,168,.5)">tap to see the minutes</button>
+                  </sc-if>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="margin-top:34px">
+            <div style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--muted-m,#90A8A8);font-weight:600;margin-bottom:6px">When you're ready</div>
+            <p style="font-size:13.5px;line-height:1.5;color:var(--muted-d,#789191);margin:0 0 14px">Your patterns wait behind a curtain. Open only what serves you today — and let it fall again after.</p>
+
+            <div style="display:flex;flex-direction:column;gap:12px">
+
+              <div style="background:var(--surface,#F5FBFB);border:1px solid rgba(40,64,63,.09);border-radius:22px;padding:20px">
+                <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--ink,#28403F)">Your rhythm</div>
+                <div style="font-size:13px;line-height:1.45;color:var(--muted-d,#789191);margin-top:3px">When you tend to settle in. No amounts — just the shape of your days.</div>
+                <sc-if value="{{ rhythmClosed }}">
+                  <button onClick="{{ toggleRhythm }}" style="margin-top:14px;background:none;border:none;padding:8px 0 2px;color:var(--accent,#559A9E);font-size:13px;font-weight:600;cursor:pointer;border-bottom:1px dashed rgba(85,154,158,.45)">draw back the curtain</button>
+                </sc-if>
+                <sc-if value="{{ rhythmShown }}">
+                  <sc-if value="{{ hasRhythm }}">
+                    <div style="display:flex;flex-direction:column;gap:9px;margin-top:18px">
+                      <sc-for list="{{ rhythmRows }}" as="r" hint-placeholder-count="7">
+                        <div style="display:flex;align-items:center;gap:10px">
+                          <div style="width:32px;font-size:11px;color:var(--muted-m,#90A8A8);font-weight:600;letter-spacing:.03em">{{ r.day }}</div>
+                          <div style="position:relative;flex:1;height:18px;background:var(--surface2,#E6F0F0);border-radius:99px">
+                            <sc-for list="{{ r.dots }}" as="d" hint-placeholder-count="1"><div style="{{ d.style }}"></div></sc-for>
+                          </div>
+                        </div>
+                      </sc-for>
+                    </div>
+                    <div style="position:relative;height:14px;margin:8px 0 0 42px">
+                      <span style="position:absolute;left:0;font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted-l,#A6BCBC);font-weight:600">night</span>
+                      <span style="position:absolute;left:25%;transform:translateX(-50%);font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted-l,#A6BCBC);font-weight:600">morning</span>
+                      <span style="position:absolute;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted-l,#A6BCBC);font-weight:600">midday</span>
+                      <span style="position:absolute;left:75%;transform:translateX(-50%);font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted-l,#A6BCBC);font-weight:600">evening</span>
+                    </div>
+                    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;line-height:1.45;color:var(--ink-soft,#567070);margin:16px 0 0">{{ rhythmCaption }}</p>
+                  </sc-if>
+                  <sc-if value="{{ noRhythm }}">
+                    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;line-height:1.5;color:var(--muted-d,#789191);margin:16px 0 0">As you visit, the shape of your days will gather here on its own. No homework.</p>
+                  </sc-if>
+                  <button onClick="{{ toggleRhythm }}" style="margin-top:12px;background:none;border:none;padding:8px 0 2px;color:var(--muted-m,#90A8A8);font-size:12.5px;font-weight:600;cursor:pointer;border-bottom:1px dashed rgba(144,168,168,.5)">let the curtain fall</button>
+                </sc-if>
+              </div>
+
+              <div style="background:var(--surface,#F5FBFB);border:1px solid rgba(40,64,63,.09);border-radius:22px;padding:20px">
+                <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--ink,#28403F)">Your line</div>
+                <div style="font-size:13px;line-height:1.45;color:var(--muted-d,#789191);margin-top:3px">Only if you've noted ounces. Your curve alone — measured against no one.</div>
+                <sc-if value="{{ lineClosed }}">
+                  <button onClick="{{ toggleLine }}" style="margin-top:14px;background:none;border:none;padding:8px 0 2px;color:var(--accent,#559A9E);font-size:13px;font-weight:600;cursor:pointer;border-bottom:1px dashed rgba(85,154,158,.45)">draw back the curtain</button>
+                </sc-if>
+                <sc-if value="{{ lineShown }}">
+                  <sc-if value="{{ hasLine }}">
+                    <div style="position:relative;height:110px;margin-top:20px">
+                      <svg viewBox="0 0 100 40" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;display:block;overflow:visible">
+                        <polyline points="{{ linePoints }}" style="fill:none;stroke:var(--accent,#559A9E);stroke-width:2;stroke-linejoin:round;stroke-linecap:round;opacity:.8;vector-effect:non-scaling-stroke"></polyline>
+                      </svg>
+                      <sc-for list="{{ lineDots }}" as="d" hint-placeholder-count="4"><div style="{{ d.style }}"></div></sc-for>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-l,#A6BCBC);font-weight:600"><span>{{ lineStart }}</span><span>{{ lineEnd }}</span></div>
+                    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;line-height:1.45;color:var(--ink-soft,#567070);margin:14px 0 0">{{ lineLatest }}</p>
+                  </sc-if>
+                  <sc-if value="{{ noLine }}">
+                    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;line-height:1.5;color:var(--muted-d,#789191);margin:16px 0 0">Whenever you choose to note the ounces, a gentle line will gather here. It may stay empty forever — that's a fine life for a chart.</p>
+                  </sc-if>
+                  <button onClick="{{ toggleLine }}" style="margin-top:12px;background:none;border:none;padding:8px 0 2px;color:var(--muted-m,#90A8A8);font-size:12.5px;font-weight:600;cursor:pointer;border-bottom:1px dashed rgba(144,168,168,.5)">let the curtain fall</button>
+                </sc-if>
+              </div>
+
+              <div style="background:var(--surface,#F5FBFB);border:1px solid rgba(40,64,63,.09);border-radius:22px;padding:20px">
+                <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--ink,#28403F)">What helps</div>
+                <div style="font-size:13px;line-height:1.45;color:var(--muted-d,#789191);margin-top:3px">The conditions your body seems to thank you for.</div>
+                <sc-if value="{{ helpsClosed }}">
+                  <button onClick="{{ toggleHelps }}" style="margin-top:14px;background:none;border:none;padding:8px 0 2px;color:var(--accent,#559A9E);font-size:13px;font-weight:600;cursor:pointer;border-bottom:1px dashed rgba(85,154,158,.45)">draw back the curtain</button>
+                </sc-if>
+                <sc-if value="{{ helpsShown }}">
+                  <sc-if value="{{ hasHelps }}">
+                    <div style="margin-top:18px;display:flex;flex-direction:column;gap:14px">
+                      <sc-for list="{{ helpBars }}" as="b" hint-placeholder-count="4">
+                        <div>
+                          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
+                            <span style="font-size:13.5px;color:var(--ink-soft,#567070);font-weight:600">{{ b.label }}</span>
+                            <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:var(--muted-m,#90A8A8)">{{ b.word }}</span>
+                          </div>
+                          <div style="height:8px;background:var(--surface2,#E6F0F0);border-radius:99px;margin-top:7px;overflow:hidden"><div style="{{ b.fill }}"></div></div>
+                        </div>
+                      </sc-for>
+                    </div>
+                    <sc-if value="{{ hasHelpsTime }}">
+                      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;line-height:1.45;color:var(--ink-soft,#567070);margin:16px 0 0">{{ helpsTime }}</p>
+                    </sc-if>
+                  </sc-if>
+                  <sc-if value="{{ noHelps }}">
+                    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;line-height:1.5;color:var(--muted-d,#789191);margin:16px 0 0">After a few check-ins, we'll gently notice what your body seems to like. No homework — it gathers on its own.</p>
+                  </sc-if>
+                  <button onClick="{{ toggleHelps }}" style="margin-top:12px;background:none;border:none;padding:8px 0 2px;color:var(--muted-m,#90A8A8);font-size:12.5px;font-weight:600;cursor:pointer;border-bottom:1px dashed rgba(144,168,168,.5)">let the curtain fall</button>
+                </sc-if>
+              </div>
+
+            </div>
+          </div>
+
+          <p style="text-align:center;font-size:13px;color:var(--muted-l,#A6BCBC);margin:26px 0 0;font-style:italic;font-family:'Cormorant Garamond',serif">Every one of these was you, choosing yourself.</p>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isSettings }}">
+        <div data-screen-label="Settings" style="min-height:100dvh;padding:calc(env(safe-area-inset-top, 0px) + 46px) 24px calc(env(safe-area-inset-bottom, 0px) + 40px);animation:fadeIn .45s ease">
+          <button onClick="{{ backToCalm }}" style="width:44px;height:44px;border-radius:50%;border:1px solid rgba(40,64,63,.14);background:var(--surface,#F5FBFB);color:var(--ink-soft,#567070);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-bottom:22px">←</button>
+          <h1 style="font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:600;color:var(--ink,#28403F);line-height:1;margin:0 0 8px">Settings</h1>
+          <p style="font-size:14.5px;line-height:1.5;color:var(--muted-d,#789191);margin:0 0 30px">Small comforts, arranged the way you like them.</p>
+
+          <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-m,#90A8A8);font-weight:600;margin-bottom:12px">You &amp; baby</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:32px">
+            <div>
+              <label style="display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-m,#90A8A8);font-weight:600;margin-bottom:8px">Your name</label>
+              <input value="{{ momName }}" onChange="{{ onMomName }}" placeholder="Maya" style="width:100%;padding:14px 15px;border:1px solid rgba(40,64,63,.14);border-radius:14px;background:var(--surface,#F5FBFB);font-size:16px;color:var(--ink,#28403F)">
+            </div>
+            <div>
+              <label style="display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-m,#90A8A8);font-weight:600;margin-bottom:8px">Baby's name</label>
+              <input value="{{ babyName }}" onChange="{{ onBabyName }}" placeholder="Wren" style="width:100%;padding:14px 15px;border:1px solid rgba(40,64,63,.14);border-radius:14px;background:var(--surface,#F5FBFB);font-size:16px;color:var(--ink,#28403F)">
+            </div>
+          </div>
+
+          <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-m,#90A8A8);font-weight:600;margin-bottom:12px">A face to greet you</div>
+          <div style="display:flex;align-items:center;gap:16px;background:var(--surface,#F5FBFB);border:1px solid rgba(40,64,63,.09);border-radius:20px;padding:16px 18px;margin-bottom:12px">
+            <button onClick="{{ pickPhoto }}" aria-label="Add or change photo" style="width:72px;height:72px;flex:none;border-radius:50%;overflow:hidden;border:1.5px dashed rgba(40,64,63,.25);background:var(--surface2,#E6F0F0);cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center">
+              <sc-if value="{{ hasPhoto }}"><div style="{{ babyPhotoBg }}"></div></sc-if>
+              <sc-if value="{{ noPhoto }}"><span style="font-size:26px;color:var(--muted-m,#90A8A8);line-height:1">+</span></sc-if>
+            </button>
+            <div style="flex:1">
+              <div style="font-size:15px;font-weight:600;color:var(--ink,#28403F)">{{ babyNamePos }} photo</div>
+              <div style="font-size:13px;line-height:1.45;color:var(--muted-d,#789191);margin-top:2px">Tap the circle to add or change it. Yours to keep or leave blank.</div>
+              <sc-if value="{{ hasPhoto }}">
+                <button onClick="{{ removePhoto }}" style="margin-top:6px;background:none;border:none;padding:6px 0 0;color:var(--muted-m,#90A8A8);font-size:12.5px;font-weight:600;cursor:pointer">remove photo</button>
+              </sc-if>
+            </div>
+          </div>
+          <button onClick="{{ toggleBabyPhoto }}" style="width:100%;display:flex;align-items:center;gap:14px;text-align:left;background:var(--surface,#F5FBFB);border:1px solid rgba(40,64,63,.09);border-radius:18px;padding:16px 18px;cursor:pointer;margin-bottom:32px">
+            <div style="flex:1">
+              <div style="font-size:15px;font-weight:600;color:var(--ink,#28403F)">Show it on my home screen</div>
+              <div style="font-size:13px;color:var(--muted-d,#789191);margin-top:2px">Only if you'd like the company.</div>
+            </div>
+            <div style="{{ babyPhotoTrack }}"><div style="{{ babyPhotoKnob }}"></div></div>
+          </button>
+
+          <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-m,#90A8A8);font-weight:600;margin-bottom:12px">The room's palette</div>
+          <div style="display:flex;flex-wrap:wrap;gap:9px;margin-bottom:32px">
+            <sc-for list="{{ themeChips }}" as="t" hint-placeholder-count="6">
+              <button onClick="{{ t.onClick }}" style="{{ t.style }}"><span style="{{ t.dot }}"></span>{{ t.label }}</button>
+            </sc-for>
+          </div>
+
+          <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-m,#90A8A8);font-weight:600;margin-bottom:12px;margin-top:8px">Your data</div>
+          <div style="background:var(--surface,#F5FBFB);border:1px solid rgba(40,64,63,.09);border-radius:18px;padding:16px 18px">
+            <div style="font-size:13px;line-height:1.5;color:var(--muted-d,#789191)">Everything lives only on this phone — nothing is sent anywhere, ever.</div>
+            <sc-if value="{{ eraseArmed }}">
+              <div style="margin-top:12px;display:flex;align-items:center;gap:12px">
+                <span style="font-size:13px;color:var(--ink-soft,#567070);font-weight:600">Erase everything?</span>
+                <button onClick="{{ eraseConfirm }}" style="background:none;border:1.5px solid rgba(190,90,80,.5);border-radius:99px;padding:8px 14px;color:#B05A50;font-size:12.5px;font-weight:700;cursor:pointer">yes, start fresh</button>
+                <button onClick="{{ eraseCancel }}" style="background:none;border:none;padding:8px 4px;color:var(--muted-m,#90A8A8);font-size:12.5px;font-weight:600;cursor:pointer">keep it</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ eraseIdle }}">
+              <button onClick="{{ eraseArm }}" style="margin-top:10px;background:none;border:none;padding:6px 0 0;color:var(--muted-m,#90A8A8);font-size:12.5px;font-weight:600;cursor:pointer;border-bottom:1px dashed rgba(144,168,168,.5)">start over — erase everything</button>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+
+    <sc-if value="{{ enteringOpen }}">
+      <div style="position:fixed;inset:0;z-index:40;display:flex;flex-direction:column;justify-content:flex-end;animation:{{ entOverlayAnim }}">
+        <div onClick="{{ closeEnter }}" style="position:absolute;inset:0;background:rgba(30,45,44,.34);backdrop-filter:blur(2px)"></div>
+        <div style="position:relative;width:100%;max-width:520px;margin:0 auto;background:var(--screen,#ECF5F5);border-radius:34px 34px 0 0;padding:30px 26px calc(env(safe-area-inset-bottom, 0px) + 26px);box-shadow:0 -18px 50px rgba(40,64,63,.28);animation:{{ entSheetAnim }}">
+          <div style="width:42px;height:5px;border-radius:99px;background:rgba(40,64,63,.16);margin:0 auto 22px"></div>
+          <div style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--muted-m,#90A8A8);font-weight:600;margin-bottom:10px">Before we begin —</div>
+          <h2 style="font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;color:var(--ink,#28403F);line-height:1.05;margin:0 0 20px">How are you arriving today?</h2>
+          <div style="display:flex;flex-wrap:wrap;gap:9px;margin-bottom:24px">
+            <sc-for list="{{ enterChips }}" as="c" hint-placeholder-count="5">
+              <button onClick="{{ c.onClick }}" style="{{ c.style }}">{{ c.label }}</button>
+            </sc-for>
+          </div>
+          <button onClick="{{ confirmEnter }}" style="width:100%;padding:17px;border:none;border-radius:18px;background:var(--accent,#559A9E);color:var(--on-accent,#F4FAFA);font-size:16px;font-weight:600;letter-spacing:.03em;cursor:pointer;box-shadow:0 10px 26px rgba(60,110,110,.28)">Settle in</button>
+          <button onClick="{{ skipEnter }}" style="width:100%;margin-top:8px;background:none;border:none;color:var(--muted-m,#90A8A8);font-size:13.5px;font-weight:500;cursor:pointer;padding:12px">Skip this — I'll just settle in</button>
+        </div>
+      </div>
+    </sc-if>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:900},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Tidewater&quot;,&quot;options&quot;:[&quot;Warm sand&quot;,&quot;Coastal blue&quot;,&quot;Tidewater&quot;,&quot;Sage&quot;,&quot;Mist&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Look&quot;},&quot;tone&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Gentle&quot;,&quot;options&quot;:[&quot;Playful&quot;,&quot;Gentle&quot;,&quot;Honest&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Voice&quot;},&quot;hideMetrics&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Voice&quot;},&quot;sessionGoalMinutes&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:20,&quot;min&quot;:5,&quot;max&quot;:45,&quot;unit&quot;:&quot;min&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Session&quot;}}">
+class Component extends DCLogic {
+  static STORE = 'lull.app.v1';
+
+  state = (() => {
+    let saved = {};
+    try { saved = JSON.parse(localStorage.getItem('lull.app.v1') || '{}') || {}; } catch (e) {}
+    const active = saved.active || null;
+    return {
+      screen: active ? 'timer' : (saved.onboarded ? 'home' : 'welcome'),
+      onboarded: !!saved.onboarded,
+      momName: saved.momName || '', babyName: saved.babyName || '',
+      momDob: saved.momDob || '', babyDob: saved.babyDob || '',
+      email: saved.email || '', optOut: !!saved.optOut,
+      quizStep: 0,
+      reasons: saved.reasons || [], pains: saved.pains || [], feeling: saved.feeling || '',
+      sessions: saved.sessions || [],
+      showBabyPhoto: saved.showBabyPhoto !== false,
+      chimeOn: saved.chimeOn === true,
+      targetMinutes: saved.targetMinutes || 0,
+      themeName: saved.themeName || '',
+      babyPhoto: saved.babyPhoto || null,
+      active,
+      now: Date.now(),
+      showTime: false, revealMetrics: false, lastElapsed: 0, completeAff: '',
+      vesselText: '', vesselVis: true, vesselRecent: [],
+      checkMood: '', checkConds: [], ozOpen: false, ozVal: null,
+      revealedCharts: {}, revealedHistory: {},
+      enteringOpen: false, enterMood: '', enteringClosing: false, chimeSetupOpen: false,
+      eraseArm: false,
+    };
+  })();
+
+  persist() {
+    const S = this.state;
+    try {
+      localStorage.setItem('lull.app.v1', JSON.stringify({
+        onboarded: S.onboarded, momName: S.momName, babyName: S.babyName,
+        momDob: S.momDob, babyDob: S.babyDob, email: S.email, optOut: S.optOut,
+        reasons: S.reasons, pains: S.pains, feeling: S.feeling,
+        sessions: S.sessions, showBabyPhoto: S.showBabyPhoto, chimeOn: S.chimeOn,
+        targetMinutes: S.targetMinutes, themeName: S.themeName,
+        babyPhoto: S.babyPhoto, active: S.active,
+      }));
+    } catch (e) {}
+  }
+  save(patchOrFn) {
+    this.setState(patchOrFn);
+    clearTimeout(this._pt);
+    this._pt = setTimeout(() => this.persist(), 60);
+  }
+
+  affSets = {
+    Playful: [
+      "Stay hydrated — those beautiful reservoirs won't fill themselves.",
+      "You're not a dairy farm. You're doing something extraordinary.",
+      "Some days you're a fountain, some days a faucet. Both count.",
+      "Your worth is not measured in ounces, love.",
+      "Let-down, not letdown. You've got this.",
+    ],
+    Gentle: [
+      "Your body is not failing you, or your baby.",
+      "Slow breaths. Warm shoulders. Let it come.",
+      "A drop, an ounce, or none at all — you are still enough.",
+      "This is a season, not a scoreboard.",
+      "You are not a machine. You are a mother.",
+    ],
+    Honest: [
+      "This is hard. You're allowed to say so.",
+      "Fed is best. Rested is better. You come first too.",
+      "Numbers lie about how much you love them.",
+      "Some sessions are survival. That's still showing up.",
+      "You can stop any time and still be a wonderful mom.",
+    ],
+  };
+
+  vesselPools = {
+    calm: [
+      "Whatever comes today is welcome.",
+      "There is nothing to solve right now — only this breath.",
+      "Comfort comes before suction.",
+      "Your body knows the way. Let it.",
+      "You are allowed to do nothing but breathe.",
+      "Slow breaths, warm shoulders, and the milk will come.",
+      "This quiet is yours. Stay a while.",
+      "Calm is not a luxury here — it is part of how the milk flows.",
+    ],
+    steady: [
+      "This session does not define you.",
+      "One session is only one moment. The whole day tells a fuller story.",
+      "You are doing meaningful work, even when it feels ordinary.",
+      "The pump is a tool, not a judge.",
+      "You are not behind. You are one mother in a wide, normal range.",
+      "Whatever the number, you are already enough.",
+      "Nothing has to be forced here.",
+      "You showed up. That is the whole of it.",
+    ],
+    tender: [
+      "Be soft with yourself here.",
+      "Let this moment hold you, too.",
+      "Your body deserves patience.",
+      "You deserve compassion, not criticism.",
+      "You are doing something tender and demanding — you deserve tenderness in return.",
+      "Speak to yourself the way you would speak to another mother.",
+      "You are still a good mother on the days nothing feels easy.",
+      "Your body is not a disappointment.",
+    ],
+    tired: [
+      "It is okay to be still.",
+      "Resting while you pump is still doing something.",
+      "This tired hour is doing more than it feels like.",
+      "You do not have to be strong every moment to be a strong mother.",
+      "This season will change. The tiredness is not forever.",
+      "You are doing important work, even when no one sees it.",
+      "Let the rest of it wait — you can only be in one place.",
+      "The tiredness is real, and so is your strength.",
+    ],
+    rushed: [
+      "Take one breath. You do not have to solve everything right now.",
+      "Relax your jaw. Lower your shoulders. Let your body soften.",
+      "The dishes can wait. The messages can wait. This moment matters too.",
+      "Squeezed in is still showing up.",
+      "Pause. Breathe. Soften.",
+      "You do not need to rush your body.",
+      "You are allowed to sit down and close the door.",
+      "Nothing good has to be forced.",
+    ],
+    default: [
+      "You are allowed to take this time.",
+      "Whatever comes today is welcome.",
+      "This session does not define you.",
+      "Comfort comes before suction.",
+      "You are allowed to do nothing but breathe.",
+      "Slow breaths, warm shoulders, and the milk will come.",
+      "You are doing meaningful work.",
+      "One session is only one moment.",
+      "Be soft with yourself here.",
+      "The pump is a tool, not a judge.",
+    ],
+  };
+
+  poolFor(mood) { return this.vesselPools[mood] || this.vesselPools.default; }
+  startVessel(mood) {
+    this.stopVessel();
+    const m = mood || this.state.enterMood;
+    const pool = this.poolFor(m);
+    const opener = (m && this.enteringLines[m]) || pool[Math.floor(Math.random() * pool.length)];
+    this.setState({ vesselText: opener, vesselVis: true, vesselRecent: [opener] });
+    this.vtid = setInterval(() => {
+      this.setState({ vesselVis: false });
+      this.vswap = setTimeout(() => {
+        this.setState(s => {
+          const recent = s.vesselRecent || [];
+          let candidates = pool.filter(p => !recent.includes(p));
+          if (candidates.length === 0) candidates = pool.filter(p => p !== s.vesselText);
+          if (candidates.length === 0) candidates = pool;
+          const n = candidates[Math.floor(Math.random() * candidates.length)];
+          return { vesselText: n, vesselVis: true, vesselRecent: [...recent, n].slice(-4) };
+        });
+      }, 1400);
+    }, 15000);
+  }
+  stopVessel() {
+    if (this.vtid) { clearInterval(this.vtid); this.vtid = null; }
+    if (this.vswap) { clearTimeout(this.vswap); this.vswap = null; }
+  }
+
+  reasonOpts = [
+    { id: 'calm', label: 'Find calm while I pump' },
+    { id: 'number', label: 'Stop chasing the number' },
+    { id: 'alone', label: 'Feel less alone' },
+    { id: 'guilt', label: 'Ease the guilt' },
+    { id: 'work', label: 'Returning to work' },
+    { id: 'enough', label: 'Made to feel not-enough' },
+  ];
+  painOpts = [
+    { id: 'compare', label: 'The comparison spiral' },
+    { id: 'body', label: 'Physical discomfort' },
+    { id: 'time', label: 'It eats my whole day' },
+    { id: 'guiltp', label: 'Guilt' },
+    { id: 'tired', label: 'Bone-tired' },
+    { id: 'touched', label: 'Touched-out' },
+  ];
+  feelingOpts = [
+    { id: 'depleted', label: 'Depleted' },
+    { id: 'coping', label: 'Coping' },
+    { id: 'neutral', label: 'Neutral' },
+    { id: 'rhythm', label: 'Finding my rhythm' },
+    { id: 'okay', label: 'Actually okay' },
+  ];
+  moodOpts = [
+    { id: 'calm', label: 'Calm' },
+    { id: 'steady', label: 'Steady' },
+    { id: 'tender', label: 'Tender' },
+    { id: 'tired', label: 'Tired' },
+    { id: 'rushed', label: 'Rushed' },
+  ];
+  condOpts = [
+    { id: 'hydrated', label: 'Hydrated' },
+    { id: 'warm', label: 'Warm shoulders' },
+    { id: 'quiet', label: 'Quiet room' },
+    { id: 'massage', label: 'A little massage' },
+    { id: 'interrupted', label: 'Interrupted' },
+    { id: 'onthego', label: 'On the go' },
+    { id: 'reading', label: 'Reading' },
+    { id: 'music', label: 'Music' },
+    { id: 'napping', label: 'Napping' },
+    { id: 'scrolling', label: 'Scrolling' },
+  ];
+  moodEase = { calm: 4, steady: 3.4, tender: 3, tired: 2.2, rushed: 1.6 };
+  moodLines = {
+    calm: 'A quiet one. You stayed.',
+    rushed: 'Squeezed between everything. Still counts.',
+    tender: 'Soft and a little teary. That is love.',
+    steady: 'Nothing dramatic. Just steady.',
+    tired: 'Running on fumes, and you showed up anyway.',
+  };
+  resultLines = {
+    depleted: 'Especially on the days the tank feels empty.',
+    coping: 'Coping is its own kind of brave.',
+    neutral: "We'll take neutral. Neutral is peace.",
+    rhythm: "Let's protect that rhythm together.",
+    okay: "Good. Let's keep it that way.",
+  };
+  enteringLines = {
+    calm: 'No need to do anything with that. Just breathe.',
+    steady: 'No performance needed. Steady is plenty.',
+    tender: "Soft today. That's allowed here.",
+    tired: 'Running on fumes, and you showed up anyway.',
+    rushed: 'Squeezed in is still showing up.',
+  };
+
+  themes = {
+    'Warm sand': '--accent:#B97A62;--accent2:#C08268;--accent-deep:#9c6350;--accent-strong:#C08268;--accent-hover:#a96a53;--accent-soft:#C09A7E;--on-accent:#FBF4EC;--tint:#F1DFD3;--surface:#FCF8F2;--surface2:#F3EADF;--warm:#EBD7C4;--screen:#F6EFE6;--g1:#FBF3E7;--g2:#F1E3D0;--g3:#EAD9C2;--g4:#F3E6D2;--g5:#ECDBC4;--ink:#3B322B;--ink2:#4B4038;--ink3:#5E5248;--ink-soft:#6E6157;--muted-d:#8A7B6D;--muted-m:#A08B76;--muted-l:#B0A090',
+    'Coastal blue': '--accent:#6E8CA8;--accent2:#7C97B1;--accent-deep:#56728C;--accent-strong:#7C97B1;--accent-hover:#5d7c98;--accent-soft:#9FB0C2;--on-accent:#F6F9FC;--tint:#DCE6EE;--surface:#F6F9FC;--surface2:#E8EEF3;--warm:#D6E2EC;--screen:#EEF3F7;--g1:#F4F8FC;--g2:#E4ECF3;--g3:#D6E2EC;--g4:#E7EFF5;--g5:#DAE4EC;--ink:#2C3742;--ink2:#35434F;--ink3:#465562;--ink-soft:#5A6B79;--muted-d:#7C8B98;--muted-m:#93A2AE;--muted-l:#A9B6C0',
+    'Sage': '--accent:#7D9A7E;--accent2:#89A488;--accent-deep:#647F66;--accent-strong:#89A488;--accent-hover:#6b8a6c;--accent-soft:#A6B7A2;--on-accent:#F7FAF5;--tint:#DEE8DB;--surface:#F7FAF5;--surface2:#E9F0E6;--warm:#D8E4D4;--screen:#EFF4EC;--g1:#F5F9F2;--g2:#E6EEE1;--g3:#D8E4D2;--g4:#E8F0E4;--g5:#DBE5D5;--ink:#2E3A2F;--ink2:#37453A;--ink3:#47564A;--ink-soft:#5B6B5D;--muted-d:#7E8C7C;--muted-m:#96A493;--muted-l:#ABB8A7',
+    'Mist': '--accent:#718586;--accent2:#7E9192;--accent-deep:#5A6D6E;--accent-strong:#7E9192;--accent-hover:#617374;--accent-soft:#9BAAAB;--on-accent:#F7F9F9;--tint:#DDE4E4;--surface:#F7F9F9;--surface2:#E9EDED;--warm:#D6DEDE;--screen:#EFF2F2;--g1:#F5F7F7;--g2:#E6EAEA;--g3:#D8DEDE;--g4:#E8ECEC;--g5:#DBE1E1;--ink:#333A3A;--ink2:#3D4545;--ink3:#4D5656;--ink-soft:#616B6B;--muted-d:#828C8C;--muted-m:#99A3A3;--muted-l:#ACB7B8',
+    'Tidewater': '--accent:#559A9E;--accent2:#63A6AA;--accent-deep:#3F7E82;--accent-strong:#63A6AA;--accent-hover:#48858a;--accent-soft:#95C5C8;--on-accent:#F4FAFA;--tint:#DCEDED;--surface:#F5FBFB;--surface2:#E6F0F0;--warm:#D2E6E6;--screen:#ECF5F5;--g1:#F2F9F9;--g2:#E2EEEE;--g3:#D3E6E6;--g4:#E4F1F1;--g5:#D6E8E8;--ink:#28403F;--ink2:#314C4C;--ink3:#425C5C;--ink-soft:#567070;--muted-d:#789191;--muted-m:#90A8A8;--muted-l:#A6BCBC',
+  };
+  themeAccents = {
+    'Warm sand': '#B97A62', 'Coastal blue': '#6E8CA8', 'Sage': '#7D9A7E',
+    'Mist': '#718586', 'Tidewater': '#559A9E',
+  };
+
+  componentDidMount() {
+    try {
+      document.title = 'Lull';
+      let vp = document.querySelector('meta[name="viewport"]');
+      if (!vp) { vp = document.createElement('meta'); vp.name = 'viewport'; document.head.appendChild(vp); }
+      vp.setAttribute('content', 'width=device-width, initial-scale=1, viewport-fit=cover');
+      const metas = [
+        ['apple-mobile-web-app-capable', 'yes'],
+        ['mobile-web-app-capable', 'yes'],
+        ['apple-mobile-web-app-status-bar-style', 'black-translucent'],
+        ['apple-mobile-web-app-title', 'Lull'],
+        ['theme-color', '#ECF5F5'],
+      ];
+      metas.forEach(([n, c]) => {
+        if (!document.querySelector('meta[name="' + n + '"]')) {
+          const m = document.createElement('meta'); m.name = n; m.content = c;
+          document.head.appendChild(m);
+        }
+      });
+    } catch (e) {}
+
+    this.visH = () => {
+      if (document.visibilityState === 'visible') {
+        this.setState({ now: Date.now() });
+        if (this.state.active && !this.state.active.pausedAt && this.state.screen === 'timer') this.acquireWake();
+      }
+    };
+    document.addEventListener('visibilitychange', this.visH);
+
+    if (this.state.active) {
+      this.startTick();
+      this.startVessel(this.state.active.mood);
+      this.acquireWake();
+    }
+  }
+  componentWillUnmount() {
+    this.stopTick(); this.stopVessel(); this.releaseWake();
+    if (this.visH) document.removeEventListener('visibilitychange', this.visH);
+    clearTimeout(this._pt);
+  }
+
+  ensureAudio() {
+    try {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return;
+      if (!this.actx) this.actx = new Ctx();
+      if (this.actx.state === 'suspended') this.actx.resume();
+    } catch (e) {}
+  }
+  playChime() {
+    try {
+      this.ensureAudio();
+      const ctx = this.actx;
+      if (ctx) {
+        const now = ctx.currentTime;
+        [523.25, 659.25, 783.99].forEach((f, i) => {
+          const o = ctx.createOscillator(), g = ctx.createGain();
+          o.type = 'sine'; o.frequency.value = f;
+          o.connect(g); g.connect(ctx.destination);
+          const t = now + i * 0.26;
+          g.gain.setValueAtTime(0.0001, t);
+          g.gain.linearRampToValueAtTime(0.14, t + 0.06);
+          g.gain.exponentialRampToValueAtTime(0.0001, t + 1.5);
+          o.start(t); o.stop(t + 1.6);
+        });
+      }
+    } catch (e) {}
+    try { if (navigator.vibrate) navigator.vibrate([130, 90, 130]); } catch (e) {}
+  }
+
+  async acquireWake() {
+    try {
+      if (navigator.wakeLock && document.visibilityState === 'visible') {
+        this.wl = await navigator.wakeLock.request('screen');
+      }
+    } catch (e) {}
+  }
+  releaseWake() {
+    try { if (this.wl) this.wl.release(); } catch (e) {}
+    this.wl = null;
+  }
+
+  goalMinutes() { return this.state.targetMinutes || (this.props && this.props.sessionGoalMinutes) || 20; }
+  elapsedSecs() {
+    const a = this.state.active;
+    if (!a) return this.state.lastElapsed || 0;
+    const end = a.pausedAt || Date.now();
+    return Math.max(0, Math.floor((end - a.startTs - (a.pausedTotal || 0)) / 1000));
+  }
+
+  startTick() {
+    this.stopTick();
+    this.tid = setInterval(() => {
+      const S = this.state, a = S.active;
+      if (!a) return;
+      const e = this.elapsedSecs();
+      if (S.chimeOn && !a.chimed && !a.pausedAt && e >= this.goalMinutes() * 60) {
+        this.playChime();
+        this.save(s => ({ active: s.active ? { ...s.active, chimed: true } : null, now: Date.now() }));
+      } else {
+        this.setState({ now: Date.now() });
+      }
+    }, 1000);
+  }
+  stopTick() { if (this.tid) { clearInterval(this.tid); this.tid = null; } }
+  go(screen) { this.stopTick(); this.stopVessel(); this.setState({ screen }); }
+
+  fmtClock(sec) { const m = Math.floor(sec / 60), s = sec % 60; return m + ':' + String(s).padStart(2, '0'); }
+  fmtDate(ts) {
+    const d = new Date(ts);
+    const wd = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()];
+    const mo = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getMonth()];
+    let h = d.getHours(); const ap = h < 12 ? 'am' : 'pm'; h = h % 12 || 12;
+    const sameYear = d.getFullYear() === new Date().getFullYear();
+    return wd + ' ' + mo + ' ' + d.getDate() + (sameYear ? '' : ' ' + d.getFullYear()) + ' · ' + h + ':' + String(d.getMinutes()).padStart(2, '0') + ' ' + ap;
+  }
+
+  begin() { this.setState({ enteringOpen: true, enterMood: '', enteringClosing: false }); }
+  startSession(mood) {
+    this.ensureAudio();
+    const active = { startTs: Date.now(), pausedTotal: 0, pausedAt: null, mood: mood || '', chimed: false };
+    this.save({ screen: 'timer', active, showTime: false, enteringOpen: false, enterMood: mood || '', chimeSetupOpen: false });
+    this.startTick();
+    this.startVessel(mood);
+    this.acquireWake();
+  }
+  pauseResume() {
+    this.save(s => {
+      const a = s.active; if (!a) return {};
+      if (a.pausedAt) {
+        this.acquireWake();
+        return { active: { ...a, pausedTotal: (a.pausedTotal || 0) + (Date.now() - a.pausedAt), pausedAt: null }, now: Date.now() };
+      }
+      this.releaseWake();
+      return { active: { ...a, pausedAt: Date.now() }, now: Date.now() };
+    });
+  }
+  finish() {
+    this.stopTick(); this.stopVessel(); this.releaseWake();
+    const secs = this.elapsedSecs();
+    const a = this.state.active || {};
+    const mood = a.mood || (secs < 600 ? 'rushed' : (secs > 900 ? 'tender' : 'calm'));
+    const affs = this.affSets[(this.props && this.props.tone) || 'Gentle'] || this.affSets.Gentle;
+    const pick = affs[Math.floor(Math.random() * affs.length)];
+    const hideMetrics = (this.props && this.props.hideMetrics) ?? true;
+    this.save(s => ({
+      screen: 'complete', active: null, lastElapsed: secs, completeAff: pick,
+      revealMetrics: !hideMetrics,
+      checkMood: a.mood || '', checkConds: [], ozOpen: false, ozVal: null,
+      sessions: [...s.sessions, { ts: Date.now(), secs, mood: a.mood || '', conds: [], oz: null }],
+    }));
+  }
+
+  updateLast(patch) {
+    this.save(s => {
+      const arr = [...s.sessions];
+      if (arr.length) arr[arr.length - 1] = { ...arr[arr.length - 1], ...patch };
+      return { sessions: arr };
+    });
+  }
+
+  renderVals() {
+    const S = this.state;
+    const tone = (this.props && this.props.tone) || 'Gentle';
+    const affs = this.affSets[tone] || this.affSets.Gentle;
+    const startOfYear = new Date(new Date().getFullYear(), 0, 0);
+    const doy = Math.floor((Date.now() - startOfYear) / 864e5);
+    const todays = affs[doy % affs.length];
+    const hideMetrics = (this.props && this.props.hideMetrics) ?? true;
+    const goalMin = this.goalMinutes();
+    const elapsed = this.elapsedSecs();
+    const pct = Math.min(100, 8 + (elapsed / (goalMin * 60)) * 92);
+    const h = new Date().getHours();
+    const greetingTime = h < 5 ? 'Quiet hours' : h < 12 ? 'Good morning' : (h < 18 ? 'Good afternoon' : 'Good evening');
+
+    let themeName = S.themeName || (this.props && this.props.theme) || 'Tidewater';
+    if (!this.themes[themeName]) themeName = 'Tidewater';
+    const themeWrap = 'min-height:100dvh;width:100%;background:var(--screen,#ECF5F5);' + (this.themes[themeName] || this.themes['Tidewater']);
+
+    const chipBase = 'padding:12px 17px;border-radius:999px;border:1.5px solid rgba(40,64,63,.14);background:var(--surface,#F5FBFB);color:var(--ink-soft,#567070);font-size:14px;font-weight:500;cursor:pointer;transition:all .15s';
+    const chipSel = 'padding:12px 17px;border-radius:999px;border:1.5px solid var(--accent,#559A9E);background:var(--tint,#DCEDED);color:var(--ink,#28403F);font-size:14px;font-weight:600;cursor:pointer;transition:all .15s';
+
+    let quizTitle, quizSub, opts, key;
+    if (S.quizStep === 0) { quizTitle = 'What brought you here?'; quizSub = 'Choose as many as feel true.'; opts = this.reasonOpts; key = 'reasons'; }
+    else if (S.quizStep === 1) { quizTitle = 'Where does it pinch?'; quizSub = 'The honest stuff. We can hold it.'; opts = this.painOpts; key = 'pains'; }
+    else { quizTitle = 'How are you feeling about pumping — really?'; quizSub = 'No wrong answer, ever.'; opts = this.feelingOpts; key = 'feeling'; }
+
+    const quizOptions = opts.map(o => {
+      const sel = key === 'feeling' ? S.feeling === o.id : S[key].includes(o.id);
+      return {
+        id: o.id, label: o.label, style: sel ? chipSel : chipBase,
+        onClick: () => {
+          if (key === 'feeling') this.save({ feeling: o.id });
+          else this.save(st => {
+            const arr = st[key];
+            const nx = arr.includes(o.id) ? arr.filter(x => x !== o.id) : [...arr, o.id];
+            return { [key]: nx };
+          });
+        },
+      };
+    });
+
+    const dotOn = 'height:5px;border-radius:99px;flex:1;background:var(--accent,#559A9E);transition:all .2s';
+    const dotOff = 'height:5px;border-radius:99px;flex:1;background:rgba(40,64,63,.13);transition:all .2s';
+    const quizDots = [0, 1, 2].map(i => ({ style: i <= S.quizStep ? dotOn : dotOff }));
+
+    const sessions = [...S.sessions].sort((a, b) => b.ts - a.ts).map(x => {
+      const revealed = !!S.revealedHistory[x.ts];
+      return {
+        dateLabel: this.fmtDate(x.ts),
+        moodWord: x.mood || 'quiet',
+        line: this.moodLines[x.mood] || 'You showed up.',
+        minutesLabel: Math.round(x.secs / 60) + ' minutes of quiet' + (x.oz != null ? ' · ' + x.oz + ' oz' : ''),
+        revealed, hidden: !revealed,
+        onToggle: () => this.setState(st => ({ revealedHistory: { ...st.revealedHistory, [x.ts]: true } })),
+      };
+    });
+
+    const chipS = 'padding:9px 14px;border-radius:999px;border:1.5px solid rgba(40,64,63,.14);background:var(--surface,#F5FBFB);color:var(--ink-soft,#567070);font-size:13px;font-weight:500;cursor:pointer';
+    const chipSSel = 'padding:9px 14px;border-radius:999px;border:1.5px solid var(--accent,#559A9E);background:var(--tint,#DCEDED);color:var(--ink,#28403F);font-size:13px;font-weight:600;cursor:pointer';
+    const moodChips = this.moodOpts.map(m => ({
+      label: m.label,
+      style: S.checkMood === m.id ? chipSSel : chipS,
+      onClick: () => { this.setState({ checkMood: m.id }); this.updateLast({ mood: m.id }); },
+    }));
+    const condChips = this.condOpts.map(c => {
+      const sel = S.checkConds.includes(c.id);
+      return {
+        label: c.label,
+        style: sel ? chipSSel : chipS,
+        onClick: () => {
+          const nx = sel ? S.checkConds.filter(x => x !== c.id) : [...S.checkConds, c.id];
+          this.setState({ checkConds: nx });
+          this.updateLast({ conds: nx });
+        },
+      };
+    });
+
+    const sorted = [...S.sessions].sort((a, b) => a.ts - b.ts);
+    const ease = m => this.moodEase[m] ?? 3;
+    const dayKey = ts => { const d = new Date(ts); return d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(); };
+    const rhythmRows = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(); d.setDate(d.getDate() - i);
+      const key = dayKey(d.getTime());
+      const dots = sorted.filter(x => dayKey(x.ts) === key).map(x => {
+        const dt = new Date(x.ts);
+        const pctX = ((dt.getHours() + dt.getMinutes() / 60) / 24 * 100).toFixed(1);
+        return { style: 'position:absolute;top:50%;left:' + pctX + '%;transform:translate(-50%,-50%);width:9px;height:9px;border-radius:50%;background:var(--accent,#559A9E);box-shadow:0 0 0 3px var(--tint,#DCEDED)' };
+      });
+      rhythmRows.push({ day: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()], dots });
+    }
+    const buckets = { morning: [], afternoon: [], evening: [], night: [] };
+    sorted.forEach(x => {
+      const hh = new Date(x.ts).getHours();
+      const b = hh < 5 ? 'night' : hh < 12 ? 'morning' : hh < 17 ? 'afternoon' : 'evening';
+      buckets[b].push(ease(x.mood));
+    });
+    let mostK = 'morning', mostN = 0, bestK = '', bestAvg = 0;
+    Object.keys(buckets).forEach(k => {
+      const a = buckets[k];
+      if (a.length > mostN) { mostK = k; mostN = a.length; }
+      if (a.length >= 2) { const av = a.reduce((p, q) => p + q, 0) / a.length; if (av > bestAvg) { bestAvg = av; bestK = k; } }
+    });
+    const hasRhythm = sorted.length > 0;
+    const rhythmCaption = 'You settle in most often in the ' + mostK + ". Not a schedule — just a shape that's yours.";
+    const helpsTime = bestK ? 'And your softest hours tend to come in the ' + bestK + '.' : '';
+
+    const vols = sorted.filter(x => x.oz != null);
+    const hasLine = vols.length >= 2;
+    let linePoints = '', lineDots = [], lineLatest = '', lineStart = '', lineEnd = '';
+    if (hasLine) {
+      const vals = vols.map(v => v.oz);
+      const mn = Math.min(...vals), mx = Math.max(...vals), span = (mx - mn) || 1;
+      const pts = vols.map((v, i) => ({ x: (i / (vols.length - 1)) * 92 + 4, y: 34 - ((v.oz - mn) / span) * 26 }));
+      linePoints = pts.map(p => p.x.toFixed(1) + ',' + p.y.toFixed(1)).join(' ');
+      lineDots = pts.map(p => ({ style: 'position:absolute;left:' + p.x.toFixed(1) + '%;top:' + (p.y / 40 * 100).toFixed(1) + '%;transform:translate(-50%,-50%);width:9px;height:9px;border-radius:50%;background:var(--accent,#559A9E);border:2px solid var(--surface,#F5FBFB)' }));
+      const fd = ts => { const d = new Date(ts); return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getMonth()] + ' ' + d.getDate(); };
+      lineStart = fd(vols[0].ts); lineEnd = fd(vols[vols.length - 1].ts);
+      lineLatest = 'Most recently, about ' + vals[vals.length - 1] + ' ounces. Whatever the line does next, it will still be yours alone.';
+    }
+
+    const condLabel = {}; this.condOpts.forEach(c => { condLabel[c.id] = c.label; });
+    const easeByCond = {};
+    sorted.forEach(x => (x.conds || []).forEach(c => { (easeByCond[c] = easeByCond[c] || []).push(ease(x.mood)); }));
+    const easeWord = e2 => e2 >= 3.5 ? 'your softest' : e2 >= 3 ? 'gentle going' : e2 >= 2.4 ? 'a mixed bag' : 'harder days';
+    const helpBars = Object.keys(easeByCond).map(c => {
+      const a = easeByCond[c]; const avg = a.reduce((p, q) => p + q, 0) / a.length;
+      return { label: condLabel[c] || c, word: easeWord(avg), avg, fill: 'height:100%;width:' + ((avg / 4) * 100).toFixed(0) + '%;background:linear-gradient(90deg,var(--accent-soft,#95C5C8),var(--accent,#559A9E));border-radius:99px' };
+    }).sort((a, b) => b.avg - a.avg).slice(0, 5);
+    const hasHelps = helpBars.length > 0;
+    const rc = S.revealedCharts;
+    const toggleChart = k => () => this.setState(s => ({ revealedCharts: { ...s.revealedCharts, [k]: !s.revealedCharts[k] } }));
+
+    const nudges = [
+      'Sip some water before you settle in.',
+      'Warm shoulders make for an easy let-down.',
+      'You are allowed to do nothing but breathe.',
+    ];
+
+    const track = on => 'position:relative;width:46px;height:28px;flex:none;border-radius:99px;transition:all .2s;background:' + (on ? 'var(--accent,#559A9E)' : 'rgba(40,64,63,.18)');
+    const knob = on => 'position:absolute;top:3px;left:' + (on ? '21px' : '3px') + ';width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.22);transition:all .2s';
+    const enterChips = this.moodOpts.map(m => ({
+      label: m.label,
+      style: S.enterMood === m.id ? chipSel : chipBase,
+      onClick: () => this.setState({ enterMood: m.id }),
+    }));
+    const nm = (S.momName || 'friend').trim();
+    const vesselAff = S.enterMood ? (this.enteringLines[S.enterMood] || todays) : todays;
+
+    const themeChips = Object.keys(this.themes).map(t => ({
+      label: t,
+      style: (t === themeName ? chipSel : chipBase) + ';display:inline-flex;align-items:center;gap:8px',
+      dot: 'display:inline-block;width:13px;height:13px;border-radius:50%;flex:none;background:' + (this.themeAccents[t] || '#999'),
+      onClick: () => this.save({ themeName: t }),
+    }));
+
+    const count = S.sessions.length;
+    const momentsLine = count === 0
+      ? "Your quiet corner is ready whenever you are."
+      : "You've shown up " + count + " times. We're not counting — but we noticed.";
+
+    const running = !!(S.active && !S.active.pausedAt);
+
+    return {
+      isWelcome: S.screen === 'welcome', isSurvey: S.screen === 'survey', isQuiz: S.screen === 'quiz',
+      isQuizResult: S.screen === 'quizResult', isHome: S.screen === 'home', isTimer: S.screen === 'timer',
+      isComplete: S.screen === 'complete', isHistory: S.screen === 'history',
+      isSettings: S.screen === 'settings',
+      themeWrap,
+
+      goSettings: () => this.go('settings'),
+      momInitial: (nm[0] || 'F').toUpperCase(),
+      babyNamePos: (S.babyName || 'Baby').trim() + "'s",
+      babyPhotoBg: 'width:100%;height:100%;background-image:url("' + (S.babyPhoto || '') + '");background-size:cover;background-position:center',
+      hasPhoto: !!S.babyPhoto, noPhoto: !S.babyPhoto,
+      showHomePhoto: S.showBabyPhoto && !!S.babyPhoto,
+      pickPhoto: () => { const el = document.getElementById('lullPhotoInput'); if (el) el.click(); },
+      removePhoto: () => this.save({ babyPhoto: null }),
+      onPhotoPick: e => {
+        const f = e.target.files && e.target.files[0];
+        if (!f) return;
+        const r = new FileReader();
+        r.onload = () => {
+          const img = new Image();
+          img.onload = () => {
+            try {
+              const sz = 512;
+              const c = document.createElement('canvas'); c.width = sz; c.height = sz;
+              const x = c.getContext('2d');
+              const m = Math.min(img.width, img.height);
+              x.drawImage(img, (img.width - m) / 2, (img.height - m) / 2, m, m, 0, 0, sz, sz);
+              this.save({ babyPhoto: c.toDataURL('image/jpeg', 0.82) });
+            } catch (err) {}
+          };
+          img.src = r.result;
+        };
+        r.readAsDataURL(f);
+        e.target.value = '';
+      },
+      toggleBabyPhoto: () => this.save(s => ({ showBabyPhoto: !s.showBabyPhoto })),
+      babyPhotoTrack: track(S.showBabyPhoto), babyPhotoKnob: knob(S.showBabyPhoto),
+      chimeOn: S.chimeOn,
+      toggleChime: () => this.save(s => ({ chimeOn: !s.chimeOn })),
+      chimeTrack: track(S.chimeOn), chimeKnob: knob(S.chimeOn),
+      targetLabel: goalMin + ' minutes',
+      targetMinus: () => this.save({ targetMinutes: Math.max(5, goalMin - 5) }),
+      targetPlus: () => this.save({ targetMinutes: Math.min(45, goalMin + 5) }),
+      themeChips,
+
+      eraseIdle: !S.eraseArm, eraseArmed: S.eraseArm,
+      eraseArm: () => this.setState({ eraseArm: true }),
+      eraseCancel: () => this.setState({ eraseArm: false }),
+      eraseConfirm: () => {
+        try { localStorage.removeItem('lull.app.v1'); } catch (e) {}
+        this.stopTick(); this.stopVessel(); this.releaseWake();
+        this.setState({
+          screen: 'welcome', onboarded: false, momName: '', babyName: '', momDob: '', babyDob: '',
+          email: '', optOut: false, quizStep: 0, reasons: [], pains: [], feeling: '',
+          sessions: [], showBabyPhoto: true, chimeOn: false, targetMinutes: 0, themeName: '',
+          babyPhoto: null, active: null, eraseArm: false, revealedCharts: {}, revealedHistory: {},
+        });
+      },
+
+      enteringOpen: S.enteringOpen, enterChips,
+      confirmEnter: () => this.startSession(S.enterMood),
+      skipEnter: () => this.startSession(''),
+      closeEnter: () => {
+        if (this.state.enteringClosing) return;
+        this.setState({ enteringClosing: true });
+        setTimeout(() => this.setState({ enteringOpen: false, enteringClosing: false }), 330);
+      },
+      entOverlayAnim: S.enteringClosing ? 'fadeOut .32s ease forwards' : 'fadeIn .3s ease',
+      entSheetAnim: S.enteringClosing ? 'sheetDown .33s cubic-bezier(.4,0,1,1) forwards' : 'sheetUp .4s cubic-bezier(.22,1,.36,1)',
+      reachedGoal: !!(S.active && S.active.chimed),
+
+      startOnboard: () => this.go('survey'),
+      skipToHome: () => this.save({ screen: 'home', onboarded: true }),
+      backToWelcome: () => this.go('welcome'),
+      enterSpa: () => this.save({ screen: 'home', onboarded: true }),
+      goHistory: () => this.go('history'),
+      backToCalm: () => this.go('home'),
+
+      momName: S.momName, babyName: S.babyName, momDob: S.momDob, babyDob: S.babyDob, email: S.email, optOut: S.optOut,
+      onMomName: e => this.save({ momName: e.target.value }),
+      onBabyName: e => this.save({ babyName: e.target.value }),
+      onMomDob: e => this.save({ momDob: e.target.value }),
+      onBabyDob: e => this.save({ babyDob: e.target.value }),
+      onEmail: e => this.save({ email: e.target.value }),
+      toggleOptOut: () => this.save(s => ({ optOut: !s.optOut })),
+      submitSurvey: () => this.setState({ screen: 'quiz', quizStep: 0 }),
+
+      quizTitle, quizSub, quizOptions, quizDots,
+      quizIndex: (S.quizStep + 1) + ' of 3',
+      quizNextLabel: S.quizStep < 2 ? 'Continue' : 'See where I land',
+      quizNext: () => { if (S.quizStep < 2) this.setState({ quizStep: S.quizStep + 1 }); else this.setState({ screen: 'quizResult' }); },
+      quizBack: () => { if (S.quizStep > 0) this.setState({ quizStep: S.quizStep - 1 }); else this.setState({ screen: 'survey' }); },
+
+      resultName: S.momName || 'friend',
+      resultLine: this.resultLines[S.feeling] || 'However you arrived, you are welcome here.',
+
+      greetingTime, greetName: S.momName || 'friend', todays,
+      momentsLine,
+      beginSub: !S.chimeOn ? 'For as long as you like — no clock' : (goalMin === 20 ? 'A gentle chime at twenty minutes' : 'A gentle chime at ' + goalMin + ' minutes'),
+      hydrationNudge: nudges[doy % nudges.length],
+      begin: () => this.begin(),
+
+      fillStyle: pct.toFixed(1) + '%',
+      running, pauseLabel: running ? 'Pause' : 'Resume',
+      pauseResume: () => this.pauseResume(),
+      finish: () => this.finish(),
+      showTime: S.showTime, timeLabel: this.fmtClock(elapsed),
+      peekLabel: S.showTime ? 'hide the time' : 'peek at the time',
+      togglePeek: () => this.setState(s => ({ showTime: !s.showTime })),
+      chimeSetupOpen: S.chimeSetupOpen,
+      chimeSetupClosed: !S.chimeSetupOpen,
+      chimeSetupLink: S.chimeOn ? 'gentle chime at ' + goalMin + ' min' : 'set a gentle chime',
+      chimeSetLabel: S.chimeOn ? goalMin + ' min' : 'off',
+      openChimeSetup: () => this.setState({ chimeSetupOpen: true }),
+      closeChimeSetup: () => this.setState({ chimeSetupOpen: false }),
+      chimeDec: () => this.save(s => {
+        if (!s.chimeOn) return {};
+        if ((s.targetMinutes || 20) <= 5) return { chimeOn: false };
+        return { targetMinutes: Math.max(5, (s.targetMinutes || 20) - 5) };
+      }),
+      chimeInc: () => this.save(s => {
+        if (!s.chimeOn) return { chimeOn: true };
+        return { targetMinutes: Math.min(45, (s.targetMinutes || 20) + 5) };
+      }),
+      vesselText: S.vesselText || vesselAff,
+      vesselOpacity: S.vesselVis ? '1' : '0',
+      vesselTransform: S.vesselVis ? 'none' : 'translateY(10px)',
+
+      completeMinutes: Math.round(S.lastElapsed / 60) + ' minutes of quiet',
+      completeAff: S.completeAff || todays,
+      needTap: hideMetrics && !S.revealMetrics,
+      showReveal: !hideMetrics || S.revealMetrics,
+      toggleReveal: () => this.setState({ revealMetrics: true }),
+
+      sessions,
+      noSessions: count === 0,
+
+      moodChips, condChips,
+      moodPicked: !!S.checkMood, needMood: !S.checkMood,
+      ozClosed: !S.ozOpen, ozIsOpen: S.ozOpen,
+      ozLabel: (S.ozVal ?? 0).toFixed(1) + ' oz',
+      openOz: () => { const v = S.ozVal ?? 2; this.setState({ ozOpen: true, ozVal: v }); this.updateLast({ oz: v }); },
+      ozPlus: () => { const v = Math.min(12, (S.ozVal ?? 0) + 0.5); this.setState({ ozVal: v }); this.updateLast({ oz: v }); },
+      ozMinus: () => { const v = Math.max(0, (S.ozVal ?? 0) - 0.5); this.setState({ ozVal: v }); this.updateLast({ oz: v }); },
+      ozClear: () => { this.setState({ ozOpen: false, ozVal: null }); this.updateLast({ oz: null }); },
+      completeOzShow: S.ozVal != null,
+      completeOz: '…and ' + (S.ozVal ?? 0).toFixed(1) + ' oz, noted and tucked away.',
+
+      rhythmShown: !!rc.rhythm, rhythmClosed: !rc.rhythm, toggleRhythm: toggleChart('rhythm'),
+      lineShown: !!rc.line, lineClosed: !rc.line, toggleLine: toggleChart('line'),
+      helpsShown: !!rc.helps, helpsClosed: !rc.helps, toggleHelps: toggleChart('helps'),
+      rhythmRows, rhythmCaption, hasRhythm, noRhythm: !hasRhythm,
+      hasLine, noLine: !hasLine, linePoints, lineDots, lineLatest, lineStart, lineEnd,
+      helpBars, hasHelps, noHelps: !hasHelps, helpsTime, hasHelpsTime: !!helpsTime,
+    };
+  }
+}
+</script>
+</body>
+</html>
